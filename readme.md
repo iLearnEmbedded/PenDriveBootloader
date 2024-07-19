@@ -6,18 +6,17 @@ Architecture
 
 ![Connection](img/connection.png)
 
-Place your application binary in the pen drive under a filename "APP.BIN" in the root directory.
+Place your application binary in the pen drive under a filename "APP.BIN" in the root directory. Note: offset by 0x20000
 
-You must be able to see the contents printed in Debug console configured at 115200 Baud Rate.
+You must be able to see the contents printed in Debug console in SWO
 
+Notes:
+1. BOOT_DETECT GPIO line : PIO_1_22 active low. 
+2. Application Code Offset Address 0x20000
+   
 To Do:
+1. Introduce no_init RAM to switch between App and Boot.
+2. Remove GPIO dependency.
+3. Read the App. if it has not changed, don't blindly overwrite.
 
-Check the file: penDrive.c, 
-
-As soon as APP.BIN is detected in the pen drive,
-1. App Region Flash is erased.
-2. Read from pen drive as 128 Bytes chunk happens.
-3. This is printed in your terminal.
-4. TBD: Write the packets in Flash (refer to elico UART Bootloader example previously shared.)
-5. TBD: Complete the Boot Jump logic.
 
