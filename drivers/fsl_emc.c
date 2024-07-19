@@ -18,19 +18,19 @@
 #endif
 
 /*! @brief Define macros for EMC driver. */
-#define EMC_REFRESH_CLOCK_PARAM (16U)
-#define EMC_SDRAM_WAIT_CYCLES (2000U)
-#define EMC_DYNCTL_COLUMNBASE_OFFSET (0U)
-#define EMC_DYNCTL_COLUMNBASE_MASK (0x3U)
-#define EMC_DYNCTL_COLUMNPLUS_OFFSET (3U)
-#define EMC_DYNCTL_COLUMNPLUS_MASK (0x18U)
-#define EMC_DYNCTL_BUSWIDTH_MASK (0x80U)
-#define EMC_DYNCTL_BUSADDRMAP_MASK (0x20U)
+#define EMC_REFRESH_CLOCK_PARAM       (16U)
+#define EMC_SDRAM_WAIT_CYCLES         (2000U)
+#define EMC_DYNCTL_COLUMNBASE_OFFSET  (0U)
+#define EMC_DYNCTL_COLUMNBASE_MASK    (0x3U)
+#define EMC_DYNCTL_COLUMNPLUS_OFFSET  (3U)
+#define EMC_DYNCTL_COLUMNPLUS_MASK    (0x18U)
+#define EMC_DYNCTL_BUSWIDTH_MASK      (0x80U)
+#define EMC_DYNCTL_BUSADDRMAP_MASK    (0x20U)
 #define EMC_DYNCTL_DEVBANKS_BITS_MASK (0x1cU)
-#define EMC_SDRAM_BANKCS_BA0_MASK (uint32_t)(0x2000)
-#define EMC_SDRAM_BANKCS_BA1_MASK (uint32_t)(0x4000)
-#define EMC_SDRAM_BANKCS_BA_MASK (EMC_SDRAM_BANKCS_BA0_MASK | EMC_SDRAM_BANKCS_BA1_MASK)
-#define EMC_DIV_ROUND_UP(n, m) (((n) + (m)-1U) / (m))
+#define EMC_SDRAM_BANKCS_BA0_MASK     (uint32_t)(0x2000)
+#define EMC_SDRAM_BANKCS_BA1_MASK     (uint32_t)(0x4000)
+#define EMC_SDRAM_BANKCS_BA_MASK      (EMC_SDRAM_BANKCS_BA0_MASK | EMC_SDRAM_BANKCS_BA1_MASK)
+#define EMC_DIV_ROUND_UP(n, m)        (((n) + (m)-1U) / (m))
 
 /*******************************************************************************
  * Prototypes

@@ -1,12 +1,12 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2019 NXP
+ * Copyright 2016-2020 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-#ifndef _FSL_EMC_H_
-#define _FSL_EMC_H_
+#ifndef FSL_EMC_H_
+#define FSL_EMC_H_
 
 #include "fsl_common.h"
 
@@ -20,21 +20,21 @@
  ******************************************************************************/
 
 /*! @name Driver version */
-/*@{*/
+/*! @{ */
 /*! @brief EMC driver version. */
 #define FSL_EMC_DRIVER_VERSION (MAKE_VERSION(2, 0, 4))
-/*@}*/
+/*! @} */
 
 /*! @brief Define the chip numbers for dynamic and static memory devices. */
-#define EMC_STATIC_MEMDEV_NUM (4U)
-#define EMC_DYNAMIC_MEMDEV_NUM (4U)
-#define EMC_ADDRMAP_SHIFT EMC_DYNAMIC_DYNAMICCONFIG_AM0_SHIFT
-#define EMC_ADDRMAP_MASK (EMC_DYNAMIC_DYNAMICCONFIG_AM0_MASK | EMC_DYNAMIC_DYNAMICCONFIG_AM1_MASK)
-#define EMC_ADDRMAP(x) (((uint32_t)(((uint32_t)(x)) << EMC_ADDRMAP_SHIFT)) & EMC_ADDRMAP_MASK)
-#define EMC_HZ_ONEMHZ (1000000U)
-#define EMC_MILLISECS_ONESEC (1000U)
+#define EMC_STATIC_MEMDEV_NUM   (4U)
+#define EMC_DYNAMIC_MEMDEV_NUM  (4U)
+#define EMC_ADDRMAP_SHIFT       EMC_DYNAMIC_DYNAMICCONFIG_AM0_SHIFT
+#define EMC_ADDRMAP_MASK        (EMC_DYNAMIC_DYNAMICCONFIG_AM0_MASK | EMC_DYNAMIC_DYNAMICCONFIG_AM1_MASK)
+#define EMC_ADDRMAP(x)          (((uint32_t)(((uint32_t)(x)) << EMC_ADDRMAP_SHIFT)) & EMC_ADDRMAP_MASK)
+#define EMC_HZ_ONEMHZ           (1000000U)
+#define EMC_MILLISECS_ONESEC    (1000U)
 #define EMC_SDRAM_MODE_CL_SHIFT (4U)
-#define EMC_SDRAM_MODE_CL_MASK (0x70U)
+#define EMC_SDRAM_MODE_CL_MASK  (0x70U)
 /*! @brief EDMA_SDRAM NOP command wait us */
 #ifndef EMC_SDRAM_NOP_DELAY_US
 #define EMC_SDRAM_NOP_DELAY_US (100U)
@@ -202,7 +202,7 @@ void EMC_Init(EMC_Type *base, emc_basic_config_t *config);
  * @param timing The timing and latency for dynamica memory controller setting. It shall
  *        be used for all dynamica memory chips, threfore the worst timing value for all
  *        used chips must be given.
- * @param configure The EMC dynamic memory controller chip independent configuration pointer.
+ * @param config The EMC dynamic memory controller chip independent configuration pointer.
  *       This configuration pointer is actually pointer to a configration array. the array number
  *       depends on the "totalChips".
  * @param totalChips The total dynamic memory chip numbers been used or the length of the
@@ -221,7 +221,7 @@ void EMC_DynamicMemInit(EMC_Type *base,
  * @param base EMC peripheral base address.
  * @param extWait_Ns The extended wait timeout or the read/write transfer time.
  *        This is common for all static memory chips and set with NULL if not required.
- * @param configure The EMC static memory controller chip independent configuration pointer.
+ * @param config The EMC static memory controller chip independent configuration pointer.
  *       This configuration pointer is actually pointer to a configration array. the array number
  *       depends on the "totalChips".
  * @param totalChips The total static memory chip numbers been used or the length of the
@@ -238,7 +238,7 @@ void EMC_StaticMemInit(EMC_Type *base, uint32_t *extWait_Ns, emc_static_chip_con
  */
 void EMC_Deinit(EMC_Type *base);
 
-/* @} */
+/*! @} */
 
 /*!
  * @name EMC Basic Operation
@@ -353,7 +353,7 @@ static inline void EMC_EnterLowPowerMode(EMC_Type *base, bool enable)
     }
 }
 
-/* @} */
+/*! @} */
 
 #if defined(__cplusplus)
 }
@@ -361,4 +361,4 @@ static inline void EMC_EnterLowPowerMode(EMC_Type *base, bool enable)
 
 /*! @}*/
 
-#endif /* _FSL_EMC_H_*/
+#endif /* FSL_EMC_H_*/

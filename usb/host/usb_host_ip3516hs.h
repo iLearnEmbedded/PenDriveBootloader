@@ -441,7 +441,7 @@ typedef struct _usb_host_ip3516hs_sptl_struct
 
 #define USB_HOST_IP3516HS_PTD_MAX_TRANSFER_LENGTH 0x7FFFU
 
-#define USB_HOST_IP3516HS_MAX_UFRAME (1U << 8)
+#define USB_HOST_IP3516HS_MAX_UFRAME (1UL << 8)
 #define USB_HOST_IP3516HS_MAX_FRAME (USB_HOST_IP3516HS_MAX_UFRAME)
 
 #define USB_HOST_IP3516HS_PERIODIC_TRANSFER_GAP (3U)
@@ -475,7 +475,18 @@ typedef enum _usb_host_ip3516hs_transfer_status
     kStatus_UsbHostIp3516Hs_Data2,
     kStatus_UsbHostIp3516Hs_State,
 } usb_host_ip3516hs_transfer_status_t;
-
+#if ((defined(USB_HOST_CONFIG_IP3516HS_MAX_ISO)) && (USB_HOST_CONFIG_IP3516HS_MAX_ISO > 0U))
+typedef union index_length
+{
+    uint32_t indexLength;
+    struct
+    {
+        uint32_t tdIndex : 8U;
+        uint32_t bufferIndex : 8U;
+        uint32_t bufferLength : 16U;
+    } state;
+} indexLength_t;
+#endif
 typedef struct _usb_host_ip3516hs_td_struct
 {
 #if (defined(USB_HOST_CONFIG_IP3516HS_MAX_ISO) && (USB_HOST_CONFIG_IP3516HS_MAX_ISO > 0U))
@@ -497,19 +508,19 @@ typedef struct _usb_host_ip3516hs_td_struct
 #define USB_HOST_IP3516HS_EVENT_SOF (0x40U)
 
 #define USB_HOST_IP3516HS_PERIODIC_BANDWIDTH_PERCENT ((float)90U / (float)100U)
-#define USB_HOST_IP3516HS_PERIODIC_BANDWIDTH (125 * USB_HOST_IP3516HS_PERIODIC_BANDWIDTH_PERCENT)
+#define USB_HOST_IP3516HS_PERIODIC_BANDWIDTH ((float)125U * USB_HOST_IP3516HS_PERIODIC_BANDWIDTH_PERCENT)
 
 /*! @brief Transfer scan interval (ms)*/
 #define USB_HOST_IP3516HS_TRANSFER_SCAN_INTERVAL (200U)
 /*! @brief Time out gap for each transfer (USB_HOST_OHCI_TRANSFER_SCAN_INTERVAL * 1ms) */
-#define USB_HOST_IP3516HS_TRANSFER_TIMEOUT_GAP ((5000U * 8) / USB_HOST_IP3516HS_TRANSFER_SCAN_INTERVAL)
+#define USB_HOST_IP3516HS_TRANSFER_TIMEOUT_GAP ((5000U * 8U) / USB_HOST_IP3516HS_TRANSFER_SCAN_INTERVAL)
 
 #define USB_HOST_IP3516HS_CONTROL_PIPE_MAX_TRANSFER_LENGTH 64U
 
 /*! @brief USB host Ip3516Hs lock */
-#define USB_HostIp3516HsLock() OSA_MutexLock(usbHostState->mutex, USB_OSA_WAIT_TIMEOUT)
+#define USB_HostIp3516HsLock() (void)OSA_MutexLock(usbHostState->mutex, USB_OSA_WAIT_TIMEOUT)
 /*! @brief USB host Ip3516Hs unlock */
-#define USB_HostIp3516HsUnlock() OSA_MutexUnlock(usbHostState->mutex)
+#define USB_HostIp3516HsUnlock() (void)OSA_MutexUnlock(usbHostState->mutex)
 
 /*! @brief IP3516HS Host Controller Operational Registers */
 typedef struct _usb_host_ip3516hs_hcor_struct
@@ -590,10 +601,10 @@ typedef struct _usb_host_ip3516hs_state_struct
 #if ((defined(USB_HOST_CONFIG_LOW_POWER_MODE)) && (USB_HOST_CONFIG_LOW_POWER_MODE > 0U))
     uint64_t matchTick;
 #endif
-    osa_event_handle_t ip3516HsEvent; /*!< IP3516HS event*/
-    uint32_t taskEventHandleBuffer[(OSA_EVENT_HANDLE_SIZE + 3)/4];      /*!< task event handle buffer*/
-    osa_mutex_handle_t mutex;         /*!< Ip3516Hs layer mutex*/
-    uint32_t mutexBuffer[(OSA_MUTEX_HANDLE_SIZE + 3)/4];
+    osa_event_handle_t ip3516HsEvent;                                /*!< IP3516HS event*/
+    uint32_t taskEventHandleBuffer[(OSA_EVENT_HANDLE_SIZE + 3) / 4]; /*!< task event handle buffer*/
+    osa_mutex_handle_t mutex;                                        /*!< Ip3516Hs layer mutex*/
+    uint32_t mutexBuffer[(OSA_MUTEX_HANDLE_SIZE + 3) / 4];
     usb_host_ip3516hs_pipe_struct_t pipePool[USB_HOST_CONFIG_IP3516HS_MAX_PIPE];
     uint8_t controllerId;      /*!< Controller id */
     uint8_t portNumber;        /*!< Port count */

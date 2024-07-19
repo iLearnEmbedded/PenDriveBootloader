@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2013 - 2014, Freescale Semiconductor, Inc.
- * Copyright 2016-2018 NXP
+ * Copyright 2016-2020 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -16,10 +16,14 @@
  * Declarations
  ******************************************************************************/
 /*! @brief Bare Metal does not use timer. */
+#ifndef FSL_OSA_BM_TIMER_NONE
 #define FSL_OSA_BM_TIMER_NONE 0U
+#endif
 
 /*! @brief Bare Metal uses SYSTICK as timer. */
+#ifndef FSL_OSA_BM_TIMER_SYSTICK
 #define FSL_OSA_BM_TIMER_SYSTICK 1U
+#endif
 
 /*! @brief Configure what timer is used in Bare Metal. */
 #ifndef FSL_OSA_BM_TIMER_CONFIG
@@ -36,7 +40,9 @@ typedef uint32_t event_flags_t;
 #define OSA_WAIT_FOREVER 0xFFFFFFFFU
 
 /*! @brief How many tasks can the bare metal support. */
+#ifndef TASK_MAX_NUM
 #define TASK_MAX_NUM 7
+#endif
 
 /*! @brief OSA's time range in millisecond, OSA time wraps if exceeds this value. */
 #define FSL_OSA_TIME_RANGE 0xFFFFFFFFU
@@ -48,21 +54,48 @@ typedef uint32_t event_flags_t;
 extern void DefaultISR(void);
 
 /*!
+ * @brief Process OSA tasks
+ *
+ * This function is used to process registered tasks.
+ *
+ * Example below shows how to use this API in baremetal.
+ *
+ * @code
+ *   while(1) {
+ *     OSA_ProcessTasks();
+ *   }
+ * @endcode
+ */
+void OSA_ProcessTasks(void);
+
+/*!
+ * @brief Check OSA Task Should Yield
+ *
+ * This function is used to check task should yield, When this function returns 1, an OSA task has to run.
+ * This function is typically used with Interrupt disabled before executing WFI instruction.
+ *
+ */
+uint8_t OSA_TaskShouldYield(void);
+
+/*!
+ * @brief Correct OSA tick counter for when exiting sleep
+ *
+ * This function allows the tick counter used by the OSA functions for time
+ * keeping to be corrected with the sleep duration (taken from a low power
+ * timer. This is available only in BM context and only if the systick is used
+ * as a time source for the OSA.
+ */
+void OSA_UpdateSysTickCounter(uint32_t corr);
+
+/*!
  * @name Thread management
  * @{
  */
 
 /*!
- * @brief Defines a task.
- *
- * This macro defines resources for a task statically. Then, the OSA_TaskCreate
- * creates the task based-on these resources.
- *
- * @param task The task function.
- * @param stackSize The stack size this task needs in bytes.
+ * @brief To provide unified priority for upper layer, OSA layer makes conversation.
  */
-
-#define PRIORITY_OSA_TO_RTOS(osa_prio) (osa_prio)
+#define PRIORITY_OSA_TO_RTOS(osa_prio)  (osa_prio)
 #define PRIORITY_RTOS_TO_OSA(rtos_prio) (rtos_prio)
 
 /*! @}*/

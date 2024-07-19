@@ -18,21 +18,21 @@
  * Definitions
  ******************************************************************************/
 /*! @brief The board name */
-#define BOARD_NAME "LPCXPRESSO54608"
+#define BOARD_NAME "LPCXPRESSO54628"
 
 #define BOARD_EXTCLKINRATE (0)
 
 /*! @brief The UART to use for debug messages. */
 /* TODO: rename UART to USART */
-#define BOARD_DEBUG_UART_TYPE kSerialPort_Uart
-#define BOARD_DEBUG_UART_BASEADDR (uint32_t) USART0
-#define BOARD_DEBUG_UART_INSTANCE 0U
-#define BOARD_DEBUG_UART_CLK_FREQ CLOCK_GetFlexCommClkFreq(0)
+#define BOARD_DEBUG_UART_TYPE       kSerialPort_Uart
+#define BOARD_DEBUG_UART_BASEADDR   (uint32_t) USART0
+#define BOARD_DEBUG_UART_INSTANCE   0U
+#define BOARD_DEBUG_UART_CLK_FREQ   CLOCK_GetFlexCommClkFreq(0)
 #define BOARD_DEBUG_UART_CLK_ATTACH kFRO12M_to_FLEXCOMM0
-#define BOARD_DEBUG_UART_RST kFC0_RST_SHIFT_RSTn
-#define BOARD_DEBUG_UART_CLKSRC kCLOCK_Flexcomm0
-#define BOARD_UART_IRQ_HANDLER FLEXCOMM0_IRQHandler
-#define BOARD_UART_IRQ FLEXCOMM0_IRQn
+#define BOARD_DEBUG_UART_RST        kFC0_RST_SHIFT_RSTn
+#define BOARD_DEBUG_UART_CLKSRC     kCLOCK_Flexcomm0
+#define BOARD_UART_IRQ_HANDLER      FLEXCOMM0_IRQHandler
+#define BOARD_UART_IRQ              FLEXCOMM0_IRQn
 /* TODO: obsolete */
 #define BOARD_DEBUG_SPI_CLK_FREQ 12000000
 
@@ -40,16 +40,25 @@
 #define BOARD_DEBUG_UART_BAUDRATE 115200
 #endif /* BOARD_DEBUG_UART_BAUDRATE */
 
-/* LPI2C */
-#define BOARD_ACCEL_I2C_BASEADDR I2C2
-#define BOARD_ACCEL_I2C_CLOCK_FREQ 12000000
-
-#define BOARD_CODEC_I2C_BASEADDR I2C2
-#define BOARD_CODEC_I2C_INSTANCE 2U
-#define BOARD_CODEC_I2C_CLOCK_FREQ 12000000
-
 /*! @brief The ENET PHY address. */
 #define BOARD_ENET0_PHY_ADDRESS (0x00U) /* Phy address of enet port 0. */
+
+/*! @brief Memory ranges not usable by the ENET DMA. */
+#ifndef BOARD_ENET_NON_DMA_MEMORY_ARRAY
+#define BOARD_ENET_NON_DMA_MEMORY_ARRAY                                                     \
+    {                                                                                       \
+        {0x00000000U, 0x0007FFFFU}, {0x10000000U, 0x17FFFFFFU}, {0x80000000U, 0xDFFFFFFFU}, \
+            {0x00000000U, 0x00000000U},                                                     \
+    }
+#endif /* BOARD_ENET_NON_DMA_MEMORY_ARRAY */
+
+/* LPI2C */
+#define BOARD_ACCEL_I2C_BASEADDR   I2C2
+#define BOARD_ACCEL_I2C_CLOCK_FREQ 12000000
+
+#define BOARD_CODEC_I2C_BASEADDR   I2C2
+#define BOARD_CODEC_I2C_INSTANCE   2U
+#define BOARD_CODEC_I2C_CLOCK_FREQ 12000000
 
 #ifndef BOARD_LED1_GPIO
 #define BOARD_LED1_GPIO GPIO
@@ -80,8 +89,8 @@
 #ifndef BOARD_SW1_GPIO_PIN
 #define BOARD_SW1_GPIO_PIN 4U
 #endif
-#define BOARD_SW1_NAME "SW1"
-#define BOARD_SW3_IRQ PIN_INT0_IRQn
+#define BOARD_SW1_NAME        "SW1"
+#define BOARD_SW3_IRQ         PIN_INT0_IRQn
 #define BOARD_SW3_IRQ_HANDLER PIN_INT0_IRQHandler
 
 #ifndef BOARD_SW2_GPIO
@@ -91,8 +100,8 @@
 #ifndef BOARD_SW2_GPIO_PIN
 #define BOARD_SW2_GPIO_PIN 6U
 #endif
-#define BOARD_SW2_NAME "SW2"
-#define BOARD_SW2_IRQ PIN_INT0_IRQn
+#define BOARD_SW2_NAME        "SW2"
+#define BOARD_SW2_IRQ         PIN_INT0_IRQn
 #define BOARD_SW2_IRQ_HANDLER PIN_INT0_IRQHandler
 
 #ifndef BOARD_SW3_GPIO
@@ -102,9 +111,9 @@
 #ifndef BOARD_SW3_GPIO_PIN
 #define BOARD_SW3_GPIO_PIN 5U
 #endif
-#define BOARD_SW3_NAME "SW3"
-#define BOARD_SW3_IRQ PIN_INT0_IRQn
-#define BOARD_SW3_IRQ_HANDLER PIN_INT0_IRQHandler
+#define BOARD_SW3_NAME              "SW3"
+#define BOARD_SW3_IRQ               PIN_INT0_IRQn
+#define BOARD_SW3_IRQ_HANDLER       PIN_INT0_IRQHandler
 #define BOARD_SW3_GPIO_PININT_INDEX 0
 
 #ifndef BOARD_SW4_GPIO
@@ -116,9 +125,9 @@
 #ifndef BOARD_SW4_GPIO_PIN
 #define BOARD_SW4_GPIO_PIN 4U
 #endif
-#define BOARD_SW4_NAME "SW4"
-#define BOARD_SW4_IRQ PIN_INT0_IRQn
-#define BOARD_SW4_IRQ_HANDLER PIN_INT0_IRQHandler
+#define BOARD_SW4_NAME              "SW4"
+#define BOARD_SW4_IRQ               PIN_INT0_IRQn
+#define BOARD_SW4_IRQ_HANDLER       PIN_INT0_IRQHandler
 #define BOARD_SW4_GPIO_PININT_INDEX 0
 
 #ifndef BOARD_SW5_GPIO
@@ -130,73 +139,72 @@
 #ifndef BOARD_SW5_GPIO_PIN
 #define BOARD_SW5_GPIO_PIN 1U
 #endif
-#define BOARD_SW5_NAME "SW5"
-#define BOARD_SW5_IRQ PIN_INT1_IRQn
-#define BOARD_SW5_IRQ_HANDLER PIN_INT1_IRQHandler
+#define BOARD_SW5_NAME              "SW5"
+#define BOARD_SW5_IRQ               PIN_INT1_IRQn
+#define BOARD_SW5_IRQ_HANDLER       PIN_INT1_IRQHandler
 #define BOARD_SW5_GPIO_PININT_INDEX 0
 
-#define BOARD_SDIF_BASEADDR SDIF
-#define BOARD_SDIF_CLKSRC kCLOCK_SDio
-#define BOARD_SDIF_CLK_FREQ CLOCK_GetSdioClkFreq()
-#define BOARD_SDIF_CLK_ATTACH kMAIN_CLK_to_SDIO_CLK
-#define BOARD_SDIF_IRQ SDIO_IRQn
-#define BOARD_MMC_VCC_SUPPLY kMMC_VoltageWindows270to360
-#define BOARD_SD_CARD_DETECT_PIN 10
-#define BOARD_SD_CARD_DETECT_PORT 2
-#define BOARD_SD_CARD_DETECT_GPIO GPIO
-#define BOARD_SD_DETECT_TYPE kSDMMCHOST_DetectCardByHostCD
-
-#define BOARD_SDIF_CD_GPIO_INIT()                                                                    \
-    {                                                                                                \
-        CLOCK_EnableClock(kCLOCK_Gpio2);                                                             \
-        GPIO_PinInit(BOARD_SD_CARD_DETECT_GPIO, BOARD_SD_CARD_DETECT_PORT, BOARD_SD_CARD_DETECT_PIN, \
-                     &(gpio_pin_config_t){kGPIO_DigitalInput, 0U});                                  \
-    }
-#define BOARD_SDIF_CD_STATUS() \
-    GPIO_PinRead(BOARD_SD_CARD_DETECT_GPIO, BOARD_SD_CARD_DETECT_PORT, BOARD_SD_CARD_DETECT_PIN)
-
-#define BOARD_ARDUINO_INT_IRQ (GINT0_IRQn)
-#define BOARD_ARDUINO_I2C_IRQ (FLEXCOMM2_IRQn)
+#define BOARD_ARDUINO_INT_IRQ   (GINT0_IRQn)
+#define BOARD_ARDUINO_I2C_IRQ   (FLEXCOMM2_IRQn)
 #define BOARD_ARDUINO_I2C_INDEX (2)
 
 /* Board led color mapping */
-#define LOGIC_LED_ON 0U
+#define LOGIC_LED_ON  0U
 #define LOGIC_LED_OFF 1U
 
 #define LED1_INIT(output)                                                    \
     GPIO_PinInit(BOARD_LED1_GPIO, BOARD_LED1_GPIO_PORT, BOARD_LED1_GPIO_PIN, \
-                 &(gpio_pin_config_t){kGPIO_DigitalOutput, (output)}) /*!< Enable target LED1 */
+                 &(gpio_pin_config_t){kGPIO_DigitalOutput, (output)})                 /*!< Enable target LED1 */
 #define LED1_ON() \
-    GPIO_PortClear(BOARD_LED1_GPIO, BOARD_LED1_GPIO_PORT, 1U << BOARD_LED1_GPIO_PIN) /*!< Turn on target LED1 */
+    GPIO_PortClear(BOARD_LED1_GPIO, BOARD_LED1_GPIO_PORT, 1U << BOARD_LED1_GPIO_PIN)  /*!< Turn on target LED1 */
 #define LED1_OFF() \
-    GPIO_PortSet(BOARD_LED1_GPIO, BOARD_LED1_GPIO_PORT, 1U << BOARD_LED1_GPIO_PIN) /*!< Turn off target LED1 */
+    GPIO_PortSet(BOARD_LED1_GPIO, BOARD_LED1_GPIO_PORT, 1U << BOARD_LED1_GPIO_PIN)    /*!< Turn off target LED1 */
 #define LED1_TOGGLE() \
     GPIO_PortToggle(BOARD_LED1_GPIO, BOARD_LED1_GPIO_PORT, 1U << BOARD_LED1_GPIO_PIN) /*!< Toggle on target LED1 */
 #define LED2_INIT(output)                                                    \
     GPIO_PinInit(BOARD_LED2_GPIO, BOARD_LED2_GPIO_PORT, BOARD_LED2_GPIO_PIN, \
-                 &(gpio_pin_config_t){kGPIO_DigitalOutput, (output)}) /*!< Enable target LED2 */
+                 &(gpio_pin_config_t){kGPIO_DigitalOutput, (output)})                 /*!< Enable target LED2 */
 #define LED2_ON() \
-    GPIO_PortClear(BOARD_LED2_GPIO, BOARD_LED2_GPIO_PORT, 1U << BOARD_LED2_GPIO_PIN) /*!< Turn on target LED2 */
+    GPIO_PortClear(BOARD_LED2_GPIO, BOARD_LED2_GPIO_PORT, 1U << BOARD_LED2_GPIO_PIN)  /*!< Turn on target LED2 */
 #define LED2_OFF() \
-    GPIO_PortSet(BOARD_LED2_GPIO, BOARD_LED2_GPIO_PORT, 1U << BOARD_LED2_GPIO_PIN) /*!< Turn off target LED2 */
+    GPIO_PortSet(BOARD_LED2_GPIO, BOARD_LED2_GPIO_PORT, 1U << BOARD_LED2_GPIO_PIN)    /*!< Turn off target LED2 */
 #define LED2_TOGGLE() \
     GPIO_PortToggle(BOARD_LED2_GPIO, BOARD_LED2_GPIO_PORT, 1U << BOARD_LED2_GPIO_PIN) /*!< Toggle on target LED2 */
 
 #define LED3_INIT(output)                                                    \
     GPIO_PinInit(BOARD_LED3_GPIO, BOARD_LED3_GPIO_PORT, BOARD_LED3_GPIO_PIN, \
-                 &(gpio_pin_config_t){kGPIO_DigitalOutput, (output)}) /*!< Enable target LED3 */
+                 &(gpio_pin_config_t){kGPIO_DigitalOutput, (output)})                 /*!< Enable target LED3 */
 #define LED3_ON() \
-    GPIO_PortClear(BOARD_LED3_GPIO, BOARD_LED3_GPIO_PORT, 1U << BOARD_LED3_GPIO_PIN) /*!< Turn on target LED3 */
+    GPIO_PortClear(BOARD_LED3_GPIO, BOARD_LED3_GPIO_PORT, 1U << BOARD_LED3_GPIO_PIN)  /*!< Turn on target LED3 */
 #define LED3_OFF() \
-    GPIO_PortSet(BOARD_LED3_GPIO, BOARD_LED3_GPIO_PORT, 1U << BOARD_LED3_GPIO_PIN) /*!< Turn off target LED3 */
+    GPIO_PortSet(BOARD_LED3_GPIO, BOARD_LED3_GPIO_PORT, 1U << BOARD_LED3_GPIO_PIN)    /*!< Turn off target LED3 */
 #define LED3_TOGGLE() \
     GPIO_PortToggle(BOARD_LED3_GPIO, BOARD_LED3_GPIO_PORT, 1U << BOARD_LED3_GPIO_PIN) /*!< Toggle on target LED3 */
 
 /* LCD panel. */
-#define BOARD_LCD_BL_GPIO 3
-#define BOARD_LCD_BL_PIN 31
+#define BOARD_LCD_BL_GPIO          3
+#define BOARD_LCD_BL_PIN           31
 #define BOARD_TOUCH_PANEL_RST_GPIO 2
-#define BOARD_TOUCH_PANEL_RST_PIN 27
+#define BOARD_TOUCH_PANEL_RST_PIN  27
+
+/* @Brief Board touch panel configuration */
+#define BOARD_TOUCH_I2C_BASEADDR I2C2
+#define BOARD_TOUCH_RST_GPIO     GPIO
+#define BOARD_TOUCH_RST_PORT     2
+#define BOARD_TOUCH_RST_PIN      27
+#define BOARD_TOUCH_INT_GPIO     GPIO
+#define BOARD_TOUCH_INT_PORT     4
+#define BOARD_TOUCH_INT_PIN      0
+
+/* Serial MWM WIFI */
+#define BOARD_SERIAL_MWM_PORT_CLK_FREQ CLOCK_GetFlexCommClkFreq(4)
+#define BOARD_SERIAL_MWM_PORT          USART4
+#define BOARD_SERIAL_MWM_PORT_IRQn     FLEXCOMM4_IRQn
+#define BOARD_SERIAL_MWM_RST_GPIO      GPIO
+#define BOARD_SERIAL_MWM_RST_PORT      1
+#define BOARD_SERIAL_MWM_RST_PIN       22
+#define BOARD_SERIAL_MWM_RST_WRITE(output) \
+    GPIO_PinWrite(BOARD_SERIAL_MWM_RST_GPIO, BOARD_SERIAL_MWM_RST_PORT, BOARD_SERIAL_MWM_RST_PIN, output)
 
 #if defined(__cplusplus)
 extern "C" {
@@ -230,6 +238,10 @@ void BOARD_Codec_I2C_Init(void);
 status_t BOARD_Codec_I2C_Send(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
 status_t BOARD_Codec_I2C_Receive(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
+status_t BOARD_Touch_I2C_Send(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
+status_t BOARD_Touch_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
 

@@ -6,34 +6,36 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "board.h"
 #include <stdint.h>
 #include "clock_config.h"
+#include "board.h"
 #include "fsl_common.h"
 #include "fsl_debug_console.h"
 #include "fsl_emc.h"
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 #include "fsl_i2c.h"
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
-
+#if defined BOARD_USE_CODEC
+#include "fsl_wm8904.h"
+#endif
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
 /* The SDRAM timing. */
 #define SDRAM_REFRESHPERIOD_NS (64 * 1000000 / 4096) /* 4096 rows/ 64ms */
-#define SDRAM_TRP_NS (18u)
-#define SDRAM_TRAS_NS (42u)
-#define SDRAM_TSREX_NS (67u)
-#define SDRAM_TAPR_NS (18u)
-#define SDRAM_TWRDELT_NS (6u)
-#define SDRAM_TRC_NS (60u)
-#define SDRAM_RFC_NS (60u)
-#define SDRAM_XSR_NS (67u)
-#define SDRAM_RRD_NS (12u)
-#define SDRAM_MRD_NCLK (2u)
-#define SDRAM_RAS_NCLK (2u)
-#define SDRAM_MODEREG_VALUE (0x23u)
-#define SDRAM_DEV_MEMORYMAP (0x09u) /* 128Mbits (8M*16, 4banks, 12 rows, 9 columns)*/
+#define SDRAM_TRP_NS           (18u)
+#define SDRAM_TRAS_NS          (42u)
+#define SDRAM_TSREX_NS         (67u)
+#define SDRAM_TAPR_NS          (18u)
+#define SDRAM_TWRDELT_NS       (6u)
+#define SDRAM_TRC_NS           (60u)
+#define SDRAM_RFC_NS           (60u)
+#define SDRAM_XSR_NS           (67u)
+#define SDRAM_RRD_NS           (12u)
+#define SDRAM_MRD_NCLK         (2u)
+#define SDRAM_RAS_NCLK         (2u)
+#define SDRAM_MODEREG_VALUE    (0x33u)
+#define SDRAM_DEV_MEMORYMAP    (0x09u) /* 128Mbits (8M*16, 4banks, 12 rows, 9 columns)*/
 
 /*******************************************************************************
  * Variables
@@ -41,6 +43,7 @@
 
 /* Clock rate on the CLKIN pin */
 const uint32_t ExtClockIn = BOARD_EXTCLKINRATE;
+
 /*******************************************************************************
  * Code
  ******************************************************************************/
@@ -105,6 +108,7 @@ void BOARD_InitSDRAM(void)
     /* EMC Dynamc memory configuration. */
     EMC_DynamicMemInit(EMC, &dynTiming, &dynChipConfig, 1);
 }
+
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 void BOARD_I2C_Init(I2C_Type *base, uint32_t clkSrc_Hz)
 {
@@ -190,5 +194,18 @@ status_t BOARD_Codec_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize)
 {
     return BOARD_I2C_Receive(BOARD_CODEC_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize, rxBuff, rxBuffSize);
+}
+
+status_t BOARD_Touch_I2C_Send(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize)
+{
+    return BOARD_I2C_Send(BOARD_TOUCH_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize, (uint8_t *)txBuff,
+                          txBuffSize);
+}
+
+status_t BOARD_Touch_I2C_Receive(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize)
+{
+    return BOARD_I2C_Receive(BOARD_TOUCH_I2C_BASEADDR, deviceAddress, subAddress, subAddressSize, rxBuff, rxBuffSize);
 }
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
